@@ -11,7 +11,7 @@ const port = process.env.PORT || 2000;
 
 app.use(express.json());
 
-app.use("/api/auth", authRoute);
+app.use("/api/auth/", authRoute);
 app.use("/api/users", userRoute);
 app.use("/api/todos", todosRoute);
 
