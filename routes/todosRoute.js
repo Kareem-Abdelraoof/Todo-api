@@ -5,11 +5,13 @@ const {
   updateTodo,
   deleteTodo,
   createTodo,
+  authorizedTodoRoute,
 } = require("./../controllers/todoController");
+const { verifyWebToken } = require("./../utils/tokenUtils");
 
-router.get("/", getAllTodos);
-router.post("/", createTodo);
-router.patch("/:id", updateTodo);
-router.delete("/:id", deleteTodo);
+router.get("/", verifyWebToken, getAllTodos);
+router.post("/", verifyWebToken, createTodo);
+router.patch("/:id", verifyWebToken, authorizedTodoRoute, updateTodo);
+router.delete("/:id", verifyWebToken, authorizedTodoRoute, deleteTodo);
 
 module.exports = router;
