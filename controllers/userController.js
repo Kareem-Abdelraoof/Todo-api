@@ -1,5 +1,17 @@
 const User = require("./../models/userModel");
 
+const getUser = async (req, res) => {
+  try {
+    console.log(`at the get user function !`);
+    const user = await User.findById(req.userId);
+    if (!user) return res.status(400).json({ message: "there is no user" });
+    return res.status(200).json({ message: `here is the user !`, user });
+  } catch (err) {
+    console.log(err);
+    res.status(401).json({ message: `something went wrong`, err });
+  }
+};
+
 const updateUser = async (req, res) => {
   const newData = req.body;
 
@@ -31,8 +43,8 @@ const updateUser = async (req, res) => {
 const deleteUser = async (req, res) => {
   // find the user and delete it
   try {
-    await User.findByIdAndDelete(req.userId);
-
+    const user = await User.findById(req.userId).select("+active");
+    user.active = false;
     // send the confirmation message
     res.status(204);
   } catch (err) {
@@ -42,4 +54,4 @@ const deleteUser = async (req, res) => {
   res.send("this is the delete user route");
 };
 
-module.exports = { updateUser, deleteUser };
+module.exports = { updateUser, deleteUser, getUser };

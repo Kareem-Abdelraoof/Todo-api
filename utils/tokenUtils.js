@@ -1,4 +1,5 @@
 const jwt = require("jsonwebtoken");
+const CustomError = require('./CustomError');
 
 function generateWebToken(userId, options = { expiresIn: "1d" }) {
   const payload = {
@@ -11,23 +12,18 @@ function verifyWebToken(req, res, next) {
   // get the toke and check if it exists
   const auth = req.headers.authorization;
   if (!auth) {
-    res.status(401).json({ message: "no token provided" });
+    return next(new CustomError(401,"Authentication token is required"))
   }
   const token = auth.split(" ")[1];
-  try {
+
     // verify the token and check the expiration date
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
+    console.log(`the decoded data is ${decoded}`);
+    
     // return the userId to at the req
     req.userId = decoded.userId;
     req.token = token;
-    console.log(token);
-
     next();
-  } catch (err) {
-    res
-      .status(400)
-      .json({ message: `there was an error`, errMessage: err.message });
-  }
 }
 module.exports = { generateWebToken, verifyWebToken };

@@ -7,6 +7,7 @@ const createTodo = async (req, res) => {
   try {
     // create the todo
     const createdTodo = await Todo.create(todo);
+    console.log(`the created todo :${createdTodo}`);
 
     // respond with the success result
     res

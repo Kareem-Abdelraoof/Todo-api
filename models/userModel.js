@@ -5,18 +5,26 @@ const userSchema = new mongoose.Schema({
   username: {
     type: String,
     trim: true,
-    required: true,
+    required: [true,'Username is required']
   },
   email: {
     type: String,
-    required: true,
+    required: [true, 'Email is required'],
     lowercase: true,
     unique: true,
     trim: true,
+    validate:{
+      validator:async function (email) {
+        const User = mongoose.model('User');
+      const user = await User.findOne({email});
+      return !user || this._id.equals(user._id);
+    },
+      message:'Email already exists.'
+  }
   },
   password: {
     type: String,
-    required: true,
+    required: [true,'Password is required'],
     select: false,
   },
   active: {
@@ -33,4 +41,6 @@ userSchema.pre("save", async function (next) {
   next();
 });
 
-module.exports = mongoose.model("User", userSchema);
+const User = mongoose.model('User',userSchema)
+
+module.exports = User;
