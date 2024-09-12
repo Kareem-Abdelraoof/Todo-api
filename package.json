@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "main": "app.js",
   "scripts": {
-    "start": "nodemon app.js",
+    "start": "node app.js",
+    "server": "cd server && npm start", 
+    "serve-client": "cd client && npm run serve" ,
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -12,10 +14,12 @@
   "description": "",
   "dependencies": {
     "bcrypt": "^5.1.1",
+    "concurrently": "^9.0.1",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
     "jsonwebtoken": "^9.0.2",
-    "mongoose": "^8.6.0"
+    "mongoose": "^8.6.0",
+    "path": "^0.12.7"
   }
 }

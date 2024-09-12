@@ -6,10 +6,14 @@ const userRoute = require("./routes/usersRoute");
 const todosRoute = require("./routes/todosRoute");
 const authRoute = require("./routes/authRoute");
 const errorHandler = require("./middlewares/errorHandler")
+const path = require('path');
 
 const app = express();
 
 const port = process.env.PORT || 2000;
+
+app.use(express.static(path.join(__dirname, '../client/dist')));
+
 
 app.use(cors());
 app.use(express.json());
